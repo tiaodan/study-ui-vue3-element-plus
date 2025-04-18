@@ -1,5 +1,5 @@
 <script setup>
-import TableOrder from './components/TableOrder.vue';
+import TableOrder from './components/order/TableOrder.vue';
 </script>
 
 <template>

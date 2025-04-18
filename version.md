@@ -6,3 +6,5 @@
 - 遇到跨域错误, 用vs code插件tomcat本地运行
 # v0.0.0.3
 - 结合vue3+element-plus, 实现简单界面
+# v0.0.0.4
+- Order表增、改、查已完成
