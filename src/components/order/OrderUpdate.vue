@@ -179,4 +179,29 @@ const updateOrder = async () => {
     ElMessage('修改失败')
   }
 };
+
+// 重置变量方法
+const resetForm = () => {
+  pddOrderId.value = '';
+  pddOrderTime.value = '';
+  pddOrderPrice.value = 21.9;
+  pddProductType.value = '';
+  pddProductColor.value = '';
+  pddOrderStatus.value = '';
+  pddBuyerInfo.value = '';
+  pddExpressCompany.value = '';
+  pddExpressId.value = '';
+  pddIsBlackList.value = false;
+  pddRemark.value = '';
+  
+  // 代发相关字段
+  dropShippingPlatform.value = '';
+  dropShippingOrderId.value = '';
+  dropShippingOrderTime.value = '';
+  dropShippingFactoryName.value = '';
+  dropShippingRealPrice.value = 16.2;
+  dropShippingPrice.value = 17;
+  dropShippingDiscountPrice.value = 0.8;
+  dropShippingRemark.value = '';
+}
 </script>

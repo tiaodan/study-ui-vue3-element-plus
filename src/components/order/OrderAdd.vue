@@ -8,7 +8,7 @@
       <el-form-item label="购买时间" :label-width="formLabelWidth">
         <el-input v-model="pddOrderTime" placeholder="购买时间 2025-0X-0X 00:00" /> 
       </el-form-item>
-      <el-form-item label="购买价格" :label-width="formLabelWidth">
+      <el-form-item label="购买价格(实收)" :label-width="formLabelWidth">
         <!-- precision 表示精确到小数点后多少位 -->
         <el-input-number v-model="pddOrderPrice" :precision="2" :step="0.1"  :max="1000" />
       </el-form-item>
@@ -134,6 +134,7 @@ const pddOrderStatusOptions = [
   { label: '待发货', value: '待发货' },
   { label: '已发货，待收货', value: '已发货，待收货' },  // 中文逗号
   { label: '已收货', value: '已收货' },
+  { label: '已取消', value:'已取消' },
   { label: '无售后/取消售后', value: '无售后/取消售后' },
   { label: '售后处理中', value:'售后处理中' },
   { label: '退款中', value:'退款中' },
@@ -179,4 +180,29 @@ const addOrder = async () => {
     ElMessage('新增失败')
   }
 };
+
+// 重置变量方法
+const resetForm = () => {
+  pddOrderId.value = '';
+  pddOrderTime.value = '';
+  pddOrderPrice.value = 21.9;
+  pddProductType.value = '';
+  pddProductColor.value = '';
+  pddOrderStatus.value = '';
+  pddBuyerInfo.value = '';
+  pddExpressCompany.value = '';
+  pddExpressId.value = '';
+  pddIsBlackList.value = false;
+  pddRemark.value = '';
+  
+  // 代发相关字段
+  dropShippingPlatform.value = '';
+  dropShippingOrderId.value = '';
+  dropShippingOrderTime.value = '';
+  dropShippingFactoryName.value = '';
+  dropShippingRealPrice.value = 16.2;
+  dropShippingPrice.value = 17;
+  dropShippingDiscountPrice.value = 0.8;
+  dropShippingRemark.value = '';
+}
 </script>
