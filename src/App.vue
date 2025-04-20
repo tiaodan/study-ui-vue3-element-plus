@@ -4,7 +4,6 @@ import TableOrder from './components/order/TableOrder.vue';
 
 <template>
   <div>我是爸爸</div>
-  <el-button type="primary">普通按钮</el-button>
   <TableOrder />
 </template>
 

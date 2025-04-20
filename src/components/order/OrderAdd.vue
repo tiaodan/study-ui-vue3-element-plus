@@ -37,7 +37,11 @@
         <el-input v-model="pddBuyerInfo" placeholder="买家信息"/>
       </el-form-item>
       <el-form-item label="快递公司" :label-width="formLabelWidth">
-        <el-input v-model="pddExpressCompany" placeholder="快递公司"/>
+        <el-select v-model="pddExpressCompany" clearable placeholder="快递公司" >
+          <el-option
+            v-for="item in pddExpressCompanyOptions" :key="item.value" :label="item.label" :value="item.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="物流编号" :label-width="formLabelWidth">
         <el-input v-model="pddExpressId" placeholder="物流编号"/>
@@ -54,7 +58,11 @@
       </el-form-item>
       <!-- 待发相关 -->
       <el-form-item label="代发平台" :label-width="formLabelWidth">
-        <el-input v-model="dropShippingPlatform" placeholder="代发平台"/>
+        <el-select v-model="dropShippingPlatform" placeholder="代发平台">
+          <el-option 
+            v-for="item in dropShippingPlatformOptions" :key="item.value" :label="item.label" :value="item.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="代发订单号" :label-width="formLabelWidth">
         <el-input v-model="dropShippingOrderId" placeholder="代发订单号"/>
@@ -120,7 +128,8 @@ const dropShippingRemark = ref('')
 
 const pddProductTypeOptions = [
   { label: '无线单模', value: '无线单模' },
-  { label: '无线双模', value: '无线双模' }
+  { label: '无线双模', value: '无线双模' },
+  { label: '有线', value: '有线' },
 ]
 
 const pddProductColorOptions = [
@@ -140,12 +149,31 @@ const pddOrderStatusOptions = [
   { label: '退款中', value:'退款中' },
   { label: '退款成功', value:'退款成功' },
   { label: '无售后/售后处理中', value:'无售后/售后处理中' },
+  { label: '已发货，退款成功', value:'已发货，退款成功' },
+  { label: '未发货，退款成功', value:'未发货，退款成功' },
+  { label: '已收货，退款成功', value:'已收货，退款成功' },
 ]
 const pddIsBlackListOptions = [
   { label: '否', value: false },
   { label: '是', value: true },
 ]
 
+const pddExpressCompanyOptions = [
+  { label: '韵达快递', value: '韵达快递' },
+  { label: '极兔快递', value: '极兔快递' },
+  { label: '顺丰快递', value: '顺丰快递' },
+  { label: '申通快递', value: '申通快递' },
+  { label: '圆通快递', value: '圆通快递' },
+  { label: '中通快递', value: '中通快递' },
+]
+
+const dropShippingPlatformOptions = [
+  { label: '拼多多', value: '拼多多' },
+  { label: '京东', value: '京东' },
+  { label: '淘宝', value: '淘宝' },
+  { label: '1688', value: '1688' },
+  { label: '其他', value: '其他' },
+]
 
 // 新增订单方法
 const addOrder = async () => {
@@ -175,6 +203,8 @@ const addOrder = async () => {
     const response = await axios.post('api/orders', jsonData); // 替换为实际的 API 地址
     console.log('请求: api/orders, 数据: ', jsonData)
     ElMessage('新增成功')
+    dialogOrderAddVisible.value = false; // 关闭对话框
+    resetForm()  // 重置变量
   } catch (error) {
     console.error('新增失败: ', error);
     ElMessage('新增失败')
