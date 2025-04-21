@@ -1,9 +1,8 @@
 <template>
   <el-button type="primary" @click="getOrders">获取订单数据</el-button>
   <el-button type="primary" @click="dialogOrderAddVisible = true">新增</el-button>
-  <el-button type="primary" @click="dialogOrderUpdateVisible = true">修改</el-button>
   <OrderAdd />
-  <OrderUpdate />
+  <OrderUpdate :order="orderRow" />
   <!-- 表格 -->
   <!-- 点击显示row具体内容 -->
   <!-- <el-table :data="tableData" stripe height="800" style="width: 100%" @row-click="handleRowClick"> -->
@@ -50,25 +49,12 @@ import OrderUpdate from './OrderUpdate.vue';
 
 // 导入共享变量
 import { dialogOrderAddVisible } from '@/js/order/shared'; // 引入共享变量 为啥用@/js
-import { dialogOrderUpdateVisible } from '@/js/order/shared'; // 引入共享变量 为啥用@/js
+import { dialogOrderUpdateVisible } from '@/js/order/shared';
+import { getOrders } from '@/js/order/shared'
+import { tableData } from '@/js/order/shared';
 
-// 定义变量
-const tableData = ref([]);
-
-
-// 新增 getOrders 方法
-const getOrders = async () => {
-  try {
-    const response = await axios.get('/api/orders'); // 替换为实际的 API 地址，这样写不行，未定位原因
-    // const response = await axios.get('http://localhost:8888/orders'); // 替换为实际的 API 地址
-    tableData.value = response.data; // 将返回的数据赋值给 tableData
-    ElMessage('获取订单数据成功')
-  } catch (error) {
-    console.error('获取订单数据失败:', error);
-    // alert('获取订单数据失败，请稍后重试');
-    ElMessage('获取订单数据失败，请稍后重试')
-  }
-};
+// 新建变量
+const orderRow = ref({}); // 对象变量
 
 // 页面加载时自动请求
 onMounted(() => {
@@ -83,18 +69,20 @@ const handleRowClick = (row) => {
 
 // 处理修改按钮点击事件
 const handleEdit = (row) => {
-  ElMessage(`修改订单：${row.id}`);
+  dialogOrderUpdateVisible.value = true  // 对话框显示
+  orderRow.value = row  // row类型==object
+  console.log("修改row= ", row)
+  // ElMessage(`修改订单：${row.id}`);
   // 这里可以添加修改订单的逻辑
 };
 
 // 处理删除按钮点击事件
 const handleDelete = async(row) => {
-  ElMessage(`删除订单：${row.id}`);
   // 这里可以添加删除订单的逻辑
   try {
     const response = await axios.delete('/api/orders/' + row.id); // 替换为实际的 API 地址，这样写不行，未定位原因
     // const response = await axios.get('http://localhost:8888/orders'); // 替换为实际的 API 地址
-    ElMessage('删除订单成功')
+    ElMessage(`删除订单：${row.id} 成功`)
     // 删除后刷新数据
     await getOrders();
   } catch (error) {
@@ -102,5 +90,22 @@ const handleDelete = async(row) => {
     ElMessage('删除订单失败')
   }
 };
+
+
+/*
+// 本页面获取订单数据
+// 新增 getOrders 方法
+const getOrders = async () => {
+  try {
+    const response = await axios.get('/api/orders'); // 替换为实际的 API 地址，这样写不行，未定位原因
+    // const response = await axios.get('http://localhost:8888/orders'); // 替换为实际的 API 地址
+    tableData.value = response.data; // 将返回的数据赋值给 tableData
+    ElMessage('获取订单数据成功')
+  } catch (error) {
+    console.error('获取订单数据失败:', error);
+    ElMessage('获取订单数据失败，请稍后重试')
+  }
+};
+*/
 
 </script>

@@ -3,7 +3,7 @@
   <el-dialog v-model="dialogOrderUpdateVisible" title="修改" width="500">
     <el-form>
       <el-form-item label="PDD订单号" :label-width="formLabelWidth">
-        <el-input v-model="pddOrderId" placeholder="PDD订单号"/>
+        <el-input v-model="order.pddOrderId" placeholder="PDD订单号"/>
       </el-form-item>
       <el-form-item label="购买时间" :label-width="formLabelWidth">
         <el-input v-model="pddOrderTime" placeholder="购买时间 2025-0X-0X 00:00" /> 
@@ -86,7 +86,7 @@
         <el-input v-model="dropShippingRemark" placeholder="代发备注"/>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="updateOrder">修改</el-button>
+        <el-button type="primary" @click="updateOrder">确认</el-button>
         <el-button>取消</el-button>
       </el-form-item>
     </el-form>
@@ -96,11 +96,17 @@
 
 <script lang="ts" setup>
 // 导入
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 // 导入共享变量
 import { dialogOrderUpdateVisible } from '@/js/order/shared';
+import { getOrders } from '@/js/order/shared';
+
+// 整理父组件, 传来的数据
+const props = defineProps({
+  order: Object,
+});
 
 // 定义变量
 const formLabelWidth = '140px'
@@ -125,6 +131,7 @@ const dropShippingRealPrice = ref(16.2)
 const dropShippingPrice = ref(17)
 const dropShippingDiscountPrice = ref(0.8)
 const dropShippingRemark = ref('')
+
 
 const pddProductTypeOptions = [
   { label: '无线单模', value: '无线单模' },
@@ -174,6 +181,32 @@ const dropShippingPlatformOptions = [
   { label: '其他', value: '其他' },
 ]
 
+// 显示已存在的数据
+const showExistedData = () => {
+  if (props.order) { // 确保 props.order 存在
+    console.log("props.order存在!!! ")
+    pddOrderId.value = props.order.pddOrderId || '';
+    pddOrderTime.value = props.order.pddOrderTime || '';
+    pddOrderPrice.value = props.order.pddOrderPrice || 21.9;
+    pddProductType.value = props.order.pddProductType || '';
+    pddProductColor.value = props.order.pddProductColor || '';
+    pddOrderStatus.value = props.order.pddOrderStatus || '';
+    pddBuyerInfo.value = props.order.pddBuyerInfo || '';
+    pddExpressCompany.value = props.order.pddExpressCompany || '';
+    pddExpressId.value = props.order.pddExpressId || '';
+    pddIsBlackList.value = props.order.pddIsBlackList || false;
+    pddRemark.value = props.order.pddRemark || '';
+
+    // dropShippingPlatform = props.order.dropShippingPlatform;
+    // dropShippingOrderId = ref('')
+    // dropShippingOrderTime = ref('')
+    // dropShippingFactoryName = ref('')
+    // dropShippingRealPrice = ref(16.2)
+    // dropShippingPrice = ref(17)
+    // dropShippingDiscountPrice = ref(0.8)
+    // dropShippingRemark = ref('')
+  }
+};
 // 修改订单方法
 const updateOrder = async () => {
   try {
@@ -200,8 +233,11 @@ const updateOrder = async () => {
       dropShippingRemark: dropShippingRemark.value
     }
     const response = await axios.put('api/orders', jsonData); // 替换为实际的 API 地址
-    console.log('请求: api/orders, 数据: ', jsonData)
-    ElMessage('修改成功')
+    console.log('请求: api/orders, 数据: ', jsonData);
+    ElMessage('修改成功');
+    resetForm();  // 重置数据
+    dialogOrderUpdateVisible.value = false; // 关闭窗口
+    await getOrders(); // 刷新数据
   } catch (error) {
     console.error('修改失败: ', error);
     ElMessage('修改失败')
@@ -232,4 +268,5 @@ const resetForm = () => {
   dropShippingDiscountPrice.value = 0.8;
   dropShippingRemark.value = '';
 }
+
 </script>

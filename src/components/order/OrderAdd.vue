@@ -99,8 +99,12 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+
+// 导入其它组件变量
+
 // 导入共享变量
 import { dialogOrderAddVisible } from '@/js/order/shared';
+import { getOrders } from '@/js/order/shared'
 
 // 定义变量
 const formLabelWidth = '140px'
@@ -205,6 +209,7 @@ const addOrder = async () => {
     ElMessage('新增成功')
     dialogOrderAddVisible.value = false; // 关闭对话框
     resetForm()  // 重置变量
+    await getOrders() // 刷新数据
   } catch (error) {
     console.error('新增失败: ', error);
     ElMessage('新增失败')
