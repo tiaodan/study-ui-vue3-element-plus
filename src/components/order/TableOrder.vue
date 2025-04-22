@@ -71,7 +71,8 @@ const handleRowClick = (row) => {
 const handleEdit = (row) => {
   dialogOrderUpdateVisible.value = true  // 对话框显示
   orderRow.value = row  // row类型==object
-  console.log("修改row= ", row)
+  console.log("传递给子组件 orderRow.value= ", orderRow.value)
+  console.log("传递给子组件 orderRow= ", orderRow)
   // ElMessage(`修改订单：${row.id}`);
   // 这里可以添加修改订单的逻辑
 };
@@ -90,22 +91,4 @@ const handleDelete = async(row) => {
     ElMessage('删除订单失败')
   }
 };
-
-
-/*
-// 本页面获取订单数据
-// 新增 getOrders 方法
-const getOrders = async () => {
-  try {
-    const response = await axios.get('/api/orders'); // 替换为实际的 API 地址，这样写不行，未定位原因
-    // const response = await axios.get('http://localhost:8888/orders'); // 替换为实际的 API 地址
-    tableData.value = response.data; // 将返回的数据赋值给 tableData
-    ElMessage('获取订单数据成功')
-  } catch (error) {
-    console.error('获取订单数据失败:', error);
-    ElMessage('获取订单数据失败，请稍后重试')
-  }
-};
-*/
-
 </script>

@@ -7,6 +7,8 @@ import { ElMessage } from 'element-plus';
 export const dialogOrderAddVisible = ref(false);
 export const dialogOrderUpdateVisible = ref(false);
 export const tableData = ref([]);  // 表格数据
+export const formLabelWidth = '140px' // 表单标签(label)宽度
+
 
 // -------------------- 下拉框常用变量 start --------------------
 // 产品类型: 鼠标：单模、双模、有线等

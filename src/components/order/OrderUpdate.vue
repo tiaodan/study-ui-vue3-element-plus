@@ -95,110 +95,77 @@
 
 
 <script lang="ts" setup>
-// 导入
-import { onMounted, ref } from 'vue'
+// 导入三方
+import { onUpdated, ref } from 'vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import _ from 'lodash' // 显式导入 Lodash
+
 // 导入共享变量
 import { dialogOrderUpdateVisible } from '@/js/order/shared';
 import { getOrders } from '@/js/order/shared';
 import { pddProductTypeOptions, pddProductColorOptions, pddOrderStatusOptions, pddExpressCompanyOptions, pddIsBlackListOptions, dropShippingPlatformOptions } from '@/js/order/shared';
+import { formLabelWidth } from '@/js/order/shared'; 
 
 // 整理父组件, 传来的数据
 const props = defineProps({
   order: Object,
 });
 
-// 进行父组件，传递参数, 深拷贝
-const deepCloneOrder = ref(_.cloneDeep(props.order))
+console.log("111111111111111= 加载父组件就加载 子组件了")
+const deepCloneOrder = ref(_.cloneDeep(props.order));
 
 // 定义变量
-const formLabelWidth = '140px'
 
-// const pddOrderId = ref('')
-// const pddOrderTime = ref('')
-// const pddOrderPrice = ref(21.9)
-// const pddProductType = ref('')
-// const pddProductColor = ref('')
-// const pddOrderStatus = ref('')
-// const pddBuyerInfo = ref('')
-// const pddExpressCompany = ref('')
-// const pddExpressId = ref('')
-// const pddIsBlackList = ref(false)
-// const pddRemark = ref('')
 
-// const dropShippingPlatform = ref('')
-// const dropShippingOrderId = ref('')
-// const dropShippingOrderTime = ref('')
-// const dropShippingFactoryName = ref('')
-// const dropShippingRealPrice = ref(16.2)
-// const dropShippingPrice = ref(17)
-// const dropShippingDiscountPrice = ref(0.8)
-// const dropShippingRemark = ref('')
+// 界面更新时候执行
+onUpdated(() => {
+  if (dialogOrderUpdateVisible.value) {
+    console.log("子组件, 界面时执行。。。。。。。。。")
+    // 进行父组件，传递参数, 深拷贝
+    deepCloneOrder.value = _.cloneDeep(props.order)  //可用，但报错：“_”指 UMD 全局，但当前文件是模块。请考虑改为添加导入。 ts-plugin(2686)
+    // const deepCloneOrder = reactive(_.cloneDeep(props.order))  // 实际用途同上。可用，但报错：“_”指 UMD 全局，但当前文件是模块。请考虑改为添加导入
+    
+    console.log("父组件传递 Order:", props.order);
+    console.log("深拷贝 Order:", deepCloneOrder.value);
+  }
+})
 
 
 // 修改订单方法
 const updateOrder = async () => {
-  ElMessage('修改订单消息')
-  // try {
-  //   var jsonData = {
-  //     pddOrderId: pddOrderId.value,
-  //     pddOrderTime: pddOrderTime.value,
-  //     pddOrderPrice: pddOrderPrice.value,
-  //     pddProductType: pddProductType.value,
-  //     pddProductColor: pddProductColor.value,
-  //     pddOrderStatus: pddOrderStatus.value,
-  //     pddBuyerInfo: pddBuyerInfo.value,
-  //     pddExpressCompany: pddExpressCompany.value,
-  //     pddExpressId: pddExpressId.value,
-  //     pddIsBlackList: pddIsBlackList.value,
-  //     pddRemark: pddRemark.value,
-  //     // 代发相关
-  //     dropShippingPlatform: dropShippingPlatform.value,
-  //     dropShippingOrderId: dropShippingOrderId.value,
-  //     dropShippingOrderTime: dropShippingOrderTime.value,
-  //     dropShippingFactoryName: dropShippingFactoryName.value,
-  //     dropShippingRealPrice: dropShippingRealPrice.value,
-  //     dropShippingPrice: dropShippingPrice.value,
-  //     dropShippingDiscountPrice: dropShippingDiscountPrice.value,
-  //     dropShippingRemark: dropShippingRemark.value
-  //   }
-  //   const response = await axios.put('api/orders', jsonData); // 替换为实际的 API 地址
-  //   console.log('请求: api/orders, 数据: ', jsonData);
-  //   ElMessage('修改成功');
-  //   resetForm();  // 重置数据
-  //   dialogOrderUpdateVisible.value = false; // 关闭窗口
-  //   await getOrders(); // 刷新数据
-  // } catch (error) {
-  //   console.error('修改失败: ', error);
-  //   ElMessage('修改失败')
-  // }
+  try {
+    var jsonData = {
+      pddOrderId: deepCloneOrder.value.pddOrderId,
+      pddOrderTime: deepCloneOrder.value.pddOrderTime,
+      pddOrderPrice: deepCloneOrder.value.pddOrderPrice,
+      pddProductType: deepCloneOrder.value.pddProductType,
+      pddProductColor: deepCloneOrder.value.pddProductColor,
+      pddOrderStatus: deepCloneOrder.value.pddOrderStatus,
+      pddBuyerInfo: deepCloneOrder.value.pddBuyerInfo,
+      pddExpressCompany: deepCloneOrder.value.pddExpressCompany,
+      pddExpressId: deepCloneOrder.value.pddExpressId,
+      pddIsBlackList: deepCloneOrder.value.pddIsBlackList,
+      pddRemark: deepCloneOrder.value.pddRemark,
+      // 代发相关
+      dropShippingPlatform: deepCloneOrder.value.dropShippingPlatform,
+      dropShippingOrderId: deepCloneOrder.value.dropShippingOrderId,
+      dropShippingOrderTime: deepCloneOrder.value.dropShippingOrderTime,
+      dropShippingFactoryName: deepCloneOrder.value.dropShippingFactoryName,
+      dropShippingRealPrice: deepCloneOrder.value.dropShippingRealPrice,
+      dropShippingPrice: deepCloneOrder.value.dropShippingPrice,
+      dropShippingDiscountPrice: deepCloneOrder.value.dropShippingDiscountPrice,
+      dropShippingRemark: deepCloneOrder.value.dropShippingRemark,
+    }
+    const response = await axios.put('api/orders', jsonData); // 替换为实际的 API 地址
+    console.log('请求: api/orders, 数据: ', jsonData);
+    ElMessage('修改成功');
+    dialogOrderUpdateVisible.value = false; // 关闭窗口
+    await getOrders(); // 刷新数据
+  } catch (error) {
+    console.error('修改失败: ', error);
+    ElMessage('修改失败')
+  }
 };
-
-// 重置变量方法
-const resetForm = () => {
-  ElMessage('重置变量消息')
-  // pddOrderId.value = '';
-  // pddOrderTime.value = '';
-  // pddOrderPrice.value = 21.9;
-  // pddProductType.value = '';
-  // pddProductColor.value = '';
-  // pddOrderStatus.value = '';
-  // pddBuyerInfo.value = '';
-  // pddExpressCompany.value = '';
-  // pddExpressId.value = '';
-  // pddIsBlackList.value = false;
-  // pddRemark.value = '';
-  
-  // // 代发相关字段
-  // dropShippingPlatform.value = '';
-  // dropShippingOrderId.value = '';
-  // dropShippingOrderTime.value = '';
-  // dropShippingFactoryName.value = '';
-  // dropShippingRealPrice.value = 16.2;
-  // dropShippingPrice.value = 17;
-  // dropShippingDiscountPrice.value = 0.8;
-  // dropShippingRemark.value = '';
-}
 
 </script>

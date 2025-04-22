@@ -95,7 +95,7 @@
 
 
 <script lang="ts" setup>
-// 导入
+// 导入三方
 import { ref } from 'vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
@@ -105,10 +105,12 @@ import { ElMessage } from 'element-plus'
 // 导入共享变量
 import { dialogOrderAddVisible } from '@/js/order/shared';
 import { getOrders } from '@/js/order/shared'
+import { pddProductTypeOptions, pddProductColorOptions, pddOrderStatusOptions, pddExpressCompanyOptions, pddIsBlackListOptions, dropShippingPlatformOptions } from '@/js/order/shared';
+import { formLabelWidth } from '@/js/order/shared';  // 表单label宽度
+
+console.log("111111111111111= 加载父组件就加载了 子组件 OrderAdd")
 
 // 定义变量
-const formLabelWidth = '140px'
-
 const pddOrderId = ref('')
 const pddOrderTime = ref('')
 const pddOrderPrice = ref(21.9)
@@ -130,54 +132,6 @@ const dropShippingPrice = ref(17)
 const dropShippingDiscountPrice = ref(0.8)
 const dropShippingRemark = ref('')
 
-const pddProductTypeOptions = [
-  { label: '无线单模', value: '无线单模' },
-  { label: '无线双模', value: '无线双模' },
-  { label: '有线', value: '有线' },
-]
-
-const pddProductColorOptions = [
-  { label: '黑色', value: '黑色' },
-  { label: '白色', value: '白色' },
-  { label: '粉色', value: '粉色' },
-]
-
-const pddOrderStatusOptions = [
-  { label: '待付款', value: '待付款' },
-  { label: '待发货', value: '待发货' },
-  { label: '已发货，待收货', value: '已发货，待收货' },  // 中文逗号
-  { label: '已收货', value: '已收货' },
-  { label: '已取消', value:'已取消' },
-  { label: '无售后/取消售后', value: '无售后/取消售后' },
-  { label: '售后处理中', value:'售后处理中' },
-  { label: '退款中', value:'退款中' },
-  { label: '退款成功', value:'退款成功' },
-  { label: '无售后/售后处理中', value:'无售后/售后处理中' },
-  { label: '已发货，退款成功', value:'已发货，退款成功' },
-  { label: '未发货，退款成功', value:'未发货，退款成功' },
-  { label: '已收货，退款成功', value:'已收货，退款成功' },
-]
-const pddIsBlackListOptions = [
-  { label: '否', value: false },
-  { label: '是', value: true },
-]
-
-const pddExpressCompanyOptions = [
-  { label: '韵达快递', value: '韵达快递' },
-  { label: '极兔快递', value: '极兔快递' },
-  { label: '顺丰快递', value: '顺丰快递' },
-  { label: '申通快递', value: '申通快递' },
-  { label: '圆通快递', value: '圆通快递' },
-  { label: '中通快递', value: '中通快递' },
-]
-
-const dropShippingPlatformOptions = [
-  { label: '拼多多', value: '拼多多' },
-  { label: '京东', value: '京东' },
-  { label: '淘宝', value: '淘宝' },
-  { label: '1688', value: '1688' },
-  { label: '其他', value: '其他' },
-]
 
 // 新增订单方法
 const addOrder = async () => {
