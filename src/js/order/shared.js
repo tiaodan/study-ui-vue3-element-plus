@@ -9,7 +9,9 @@ export const dialogOrderUpdateVisible = ref(false);
 export const tableData = ref([]);  // 表格数据
 export const formLabelWidth = '140px' // 表单标签(label)宽度
 export const loading = ref(false);
-
+export const total = ref(0);  // 新增总数量
+export const currentPage = ref(1);  // 新增分页页码
+export const pageSize = ref(10);    // 新增每页数量
 
 // -------------------- 下拉框常用变量 start --------------------
 // 产品类型: 鼠标：单模、双模、有线等
@@ -74,10 +76,16 @@ export const dropShippingPlatformOptions = [
 export const getOrders = async () => {
   loading.value = true; // 开始加载
   try {
-    const response = await axios.get('/api/orders');
+    const response = await axios.get('/api/orders', {
+      params: {
+        page: currentPage.value,
+        size: pageSize.value
+      }
+    });
     ElMessage('获取成功');
-    // tableData.value = response.data; // 报错？
-    tableData.value = Array.isArray(response.data) ? response.data : []; // 不加判断，有报错：index-BPopdcVd.js:13 TypeError: n.reduce is not a function
+    console.log('获取成功 response.data:', response.data.data);
+    console.log('获取成功 response.total:', response.data.total);
+    tableData.value = Array.isArray(response.data.data) ? response.data.data : []; // tableData.value = response.data; // 报错？
   } catch (error) {
     console.error('获取失败:', error);
     ElMessage('获取失败，请稍后重试');
