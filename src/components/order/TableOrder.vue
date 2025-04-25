@@ -4,9 +4,13 @@
   <OrderAdd />
   <OrderUpdate :order="orderRow" />
   <!-- 表格 -->
-  <!-- 点击显示row具体内容 -->
-  <!-- <el-table :data="tableData" stripe height="800" style="width: 100%" @row-click="handleRowClick"> -->
-  <el-table :data="tableData" stripe height="800" style="width: 100%" >
+  <el-table 
+    :data="tableData" 
+    stripe 
+    height="800" 
+    style="width: 100%" 
+    v-loading="loading"
+  >
     <!-- 拼多多相关信息  -->
     <el-table-column fixed type="selection"/>
     <el-table-column prop="id" label="Id"  /> 
@@ -52,6 +56,7 @@ import { dialogOrderAddVisible } from '@/js/order/shared'; // 引入共享变量
 import { dialogOrderUpdateVisible } from '@/js/order/shared';
 import { getOrders } from '@/js/order/shared'
 import { tableData } from '@/js/order/shared';
+import { loading } from '@/js/order/shared'
 
 // 新建变量
 const orderRow = ref({}); // 对象变量

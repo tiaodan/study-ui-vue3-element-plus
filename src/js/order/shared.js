@@ -8,6 +8,7 @@ export const dialogOrderAddVisible = ref(false);
 export const dialogOrderUpdateVisible = ref(false);
 export const tableData = ref([]);  // 表格数据
 export const formLabelWidth = '140px' // 表单标签(label)宽度
+export const loading = ref(false);
 
 
 // -------------------- 下拉框常用变量 start --------------------
@@ -71,13 +72,18 @@ export const dropShippingPlatformOptions = [
 
 // -------------------- 方法相关: 公用方法 start --------------------
 export const getOrders = async () => {
+  loading.value = true; // 开始加载
   try {
     const response = await axios.get('/api/orders');
     ElMessage('获取成功');
-    tableData.value = response.data;
+    // tableData.value = response.data; // 报错？
+    tableData.value = Array.isArray(response.data) ? response.data : []; // 不加判断，有报错：index-BPopdcVd.js:13 TypeError: n.reduce is not a function
   } catch (error) {
     console.error('获取失败:', error);
     ElMessage('获取失败，请稍后重试');
+  } finally {
+    loading.value = false; // 结束加载
   }
+  
 };
 // -------------------- 方法相关: 公用方法 end --------------------
