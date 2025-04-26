@@ -1,5 +1,5 @@
 <template>
-  <el-button type="primary" @click="getOrders">获取订单数据</el-button>
+  <el-button type="primary" @click="getOrders(currentPage, pageSize)">获取订单数据</el-button>
   <el-button type="primary" @click="dialogOrderAddVisible = true">新增</el-button>
   <OrderAdd />
   <OrderUpdate :order="orderRow" />
@@ -41,12 +41,27 @@
       </template>
     </el-table-column>
   </el-table>
+
+  <!-- 新增分页组件 -->
+  <!-- layout写的顺序，和显示的前后顺序有关 -->
+  <el-pagination
+    background
+    :current-page="currentPage"
+    :page-sizes="[10, 20, 30]"
+    :page-size="pageSize"
+    layout="prev, pager, next, jumper, sizes, total"
+    :total="total"
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+  />
 </template>
 
 <script lang="ts" setup>
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { ElMessage } from 'element-plus';
+
+
 // 导入自己写的组件
 import OrderAdd from './OrderAdd.vue';
 import OrderUpdate from './OrderUpdate.vue';
@@ -57,15 +72,35 @@ import { dialogOrderUpdateVisible } from '@/js/order/shared';
 import { getOrders } from '@/js/order/shared'
 import { tableData } from '@/js/order/shared';
 import { loading } from '@/js/order/shared'
+// 共享-分页相关
+import { currentPage } from '@/js/order/shared'; // 当前页码
+import { pageSize } from '@/js/order/shared'; // 每页显示条数
+import { total } from '@/js/order/shared'; // 总数
+// import { handleSizeChange } from '@/js/order/shared' // 分页事件处理-大小变化
+// import { handleCurrentChange } from '@/js/order/shared' // 分页事件处理-页码变化
 
 // 新建变量
 const orderRow = ref({}); // 对象变量
 
-// 页面加载时自动请求
-onMounted(() => {
-  getOrders();
-});
+// ---- 一会放共享里
+// 新增分页事件处理-大小变化
+const handleSizeChange = (size: number) => {
+  pageSize.value = size
+  getOrders(currentPage.value, size)
+}
 
+// 新增分页事件处理-页码变化
+const handleCurrentChange = (page: number) => {
+  currentPage.value = page
+  getOrders(page, pageSize.value)
+}
+
+
+// 修改onMounted初始化调用，添加分页参数
+onMounted(() => {
+  console.log("onMounted,分页:", currentPage.value, pageSize.value);
+  getOrders(currentPage.value, pageSize.value); // 传递当前页和每页大小
+})
 
 // 处理行点击事件
 const handleRowClick = (row) => {

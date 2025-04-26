@@ -73,7 +73,8 @@ export const dropShippingPlatformOptions = [
 // -------------------- 下拉框常用变量 end --------------------
 
 // -------------------- 方法相关: 公用方法 start --------------------
-export const getOrders = async () => {
+// 非分页获取方法
+export const getOrdersNotPage = async () => {
   loading.value = true; // 开始加载
   try {
     const response = await axios.get('/api/orders', {
@@ -94,4 +95,25 @@ export const getOrders = async () => {
   }
   
 };
+
+
+// 分页获取方法
+// 修改数据获取方法
+export const getOrders = async (page = currentPage.value, size = pageSize.value) => {
+  loading.value = true; // 开始加载
+  try {
+    const response = await axios.get('/api/orders', {
+      params: { page, size }
+    })
+    // tableData.value = response.data.list
+    tableData.value = Array.isArray(response.data.data) ? response.data.data : []; // tableData.value = response.data; // 报错？
+    total.value = response.data.total
+  } catch (error) {
+    ElMessage.error('获取订单数据失败')
+  } finally {
+    loading.value = false; // 结束加载
+  }
+}
+
+
 // -------------------- 方法相关: 公用方法 end --------------------
