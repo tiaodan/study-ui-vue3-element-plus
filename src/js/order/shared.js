@@ -30,6 +30,7 @@ export const pddProductColorOptions = [
 
 // 订单状态
 export const pddOrderStatusOptions = [
+  { label: '已取消', value: '已取消' },
   { label: '待付款', value: '待付款' },
   { label: '待发货', value: '待发货' },
   { label: '已发货，待收货', value: '已发货，待收货' },  // 中文逗号
