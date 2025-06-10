@@ -45,6 +45,10 @@
 - 适配apk，能装了，能请求。因为安装默认都是https请求
 - 需要思考: axios请求，是否都要带https:/www.yuming.com,有没有更好的方式
 
-
+# v0.0.0.11v2
+- 重新上传下
 
 -------- 压缩node_moudles 再上传
+
+待办:
+- 需要思考: axios请求，是否都要带https:/www.yuming.com,有没有更好的方式
