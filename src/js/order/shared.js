@@ -103,7 +103,9 @@ export const getOrdersNotPage = async () => {
 export const getOrders = async (page = currentPage.value, size = pageSize.value) => {
   loading.value = true; // 开始加载
   try {
-    const response = await axios.get('/api/orders', {
+    // const response = await axios.get('/api/orders', {
+    // const response = await axios.get('http://www.j88d.com:8888/orders', {
+    const response = await axios.get('https://www.j88d.com/api/orders', {
       params: { page, size }
     })
     // tableData.value = response.data.list
@@ -116,5 +118,36 @@ export const getOrders = async (page = currentPage.value, size = pageSize.value)
   }
 }
 
+
+// 拦截器方式，请求。拦截请求，查看具体请求 - 测试用-delte
+/*
+export const getOrders = async (page = currentPage.value, size = pageSize.value) => {
+  loading.value = true // 开始加载
+
+  const params = { page, size }
+
+  // 👉 拼接完整请求 URL（最简单）
+  const queryString = new URLSearchParams(params).toString()
+  const fullUrl = axios.defaults.baseURL
+    ? axios.defaults.baseURL.replace(/\/$/, '') + '/api/orders?' + queryString
+    : '/api/orders?' + queryString
+
+  console.log('请求 URL =', fullUrl)
+  ElMessage.info(`请求 URL = ${fullUrl}`)
+
+  try {
+    const response = await axios.get('/api/orders', { params })
+    // const response = await axios.get('http://www.j88d.com:8888/orders', { params })
+
+    // 数据处理
+    tableData.value = Array.isArray(response.data.data) ? response.data.data : []
+    total.value = response.data.total
+  } catch (error) {
+    ElMessage.error('获取订单数据失败')
+  } finally {
+    loading.value = false // 结束加载
+  }
+}
+*/
 
 // -------------------- 方法相关: 公用方法 end --------------------

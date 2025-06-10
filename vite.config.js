@@ -21,7 +21,7 @@ export default defineConfig({
     allowedHosts: ['www.j88d.com', 'j88d.com', 'aoxuehongmei.com', 'www.aoxuehongmei.com'],  // 允许该域名访问
     proxy: {
       '/api': {
-        target: 'http://localhost:8888',
+        target: 'http://www.j88d.com:8888',
         // target: 'localhost:8888', // 不带http请求不到
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''), // 自动生成的，不知道干嘛用的, 留着
